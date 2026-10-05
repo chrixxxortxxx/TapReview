@@ -1,7 +1,7 @@
 -- TapReview schema for Supabase (PostgreSQL 15+)
 -- Run in the Supabase SQL editor, or with `supabase db push`.
 
-create extension if not exists pgcrypto;
+create extension if not exists pgcrypto; -- on Supabase this already lives in the "extensions" schema
 
 -- ---------------------------------------------------------------------------
 -- Types
@@ -376,7 +376,7 @@ create view public.card_totals with (security_invoker = true) as
 -- Helper functions
 -- ---------------------------------------------------------------------------
 create or replace function public.random_token(len int default 10) returns text
-language plpgsql volatile as $$
+language plpgsql volatile set search_path = public, extensions as $$
 declare
   alphabet constant text := '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
   bytes bytea := gen_random_bytes(len);

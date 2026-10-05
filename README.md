@@ -34,9 +34,14 @@ Try the customer flow: open any card → **Open landing page** (or copy its URL 
 ## 2. Production setup (Supabase)
 
 1. Create a project at [supabase.com](https://supabase.com).
-2. In **SQL Editor**, run `supabase/migrations/001_schema.sql`.
-3. (Optional) Run `supabase/seed.sql` for the Philippine reference data and demo restaurants. It always needs at least the regions/provinces part — if you don't want demo businesses, run only the first three `insert` statements.
-   Regenerate it any time with `npm run seed:sql`.
+2. Apply the migrations in `supabase/migrations/` in order — `001_schema.sql`, `002_reference_data.sql` (PH regions/provinces/cities, required), `003_fixes.sql`:
+   ```bash
+   supabase link --project-ref <your-project-ref>
+   supabase db push
+   ```
+   (or paste each file into the **SQL Editor**).
+3. (Optional) Run `supabase/seed.sql` in the SQL Editor for the demo restaurants, cards and activity.
+   Regenerate reference + demo SQL any time with `npm run seed:sql`.
 4. Copy `.env.example` to `.env` and fill in:
    ```
    VITE_SUPABASE_URL=https://xxxx.supabase.co

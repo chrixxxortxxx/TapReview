@@ -4,7 +4,7 @@ import { RefreshCw } from 'lucide-react'
 import { api } from '../../lib/api'
 import { useAuth } from '../../lib/auth'
 import { IS_DEMO, PUBLIC_BASE_URL } from '../../lib/config'
-import { webNfcSupported } from '../../lib/nfc'
+import { webNfcSupported, webNfcUnavailableReason } from '../../lib/nfc'
 import { Button, Field, Panel, useAction } from '../../components/ui'
 
 export default function Settings() {
@@ -47,7 +47,7 @@ export default function Settings() {
           <dl className="dl">
             <dt>Mode</dt><dd>{IS_DEMO ? 'Demo (in-browser data)' : 'Production (Supabase)'}</dd>
             <dt>Public card base URL</dt><dd className="mono">{PUBLIC_BASE_URL}/t/…</dd>
-            <dt>Web NFC on this device</dt><dd>{webNfcSupported ? 'Supported — cards can be read and written from card pages' : 'Not supported — use Chrome on Android, or an NFC writer app'}</dd>
+            <dt>Web NFC on this device</dt><dd>{webNfcSupported ? 'Supported — cards can be read and written from card pages' : `Not available — ${webNfcUnavailableReason()}`}</dd>
           </dl>
         </Panel>
       )}

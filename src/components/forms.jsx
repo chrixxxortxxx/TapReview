@@ -4,7 +4,7 @@ import { api } from '../lib/api'
 import { useAuth } from '../lib/auth'
 import { useWorkspace } from '../lib/workspace'
 import { CITIES, PROVINCES, PROVINCE_REGION, REGIONS, citiesOf, findCity } from '../lib/geo'
-import { readTagUid, webNfcSupported } from '../lib/nfc'
+import { readTagUid, webNfcSupported, webNfcUnavailableReason } from '../lib/nfc'
 import { isSafeHttpUrl } from '../lib/format'
 import { Button, Field, Modal, useAction, useToast } from './ui'
 import LocationPicker from './LocationPicker'
@@ -116,7 +116,7 @@ export function CardFormModal({ card, defaults = {}, onClose, onSaved }) {
         <div className="divider" />
         <h3>Physical card</h3>
         <div className="form-grid">
-          <Field label="NFC UID / serial" hint={webNfcSupported ? 'Tap “Read tag” and hold the card to the phone.' : 'Printed on packaging or read with an NFC app.'}>
+          <Field label="NFC UID / serial" hint={webNfcSupported ? 'Tap “Read tag”, then hold the card flat against the middle of the phone’s back.' : `Type the UID from the packaging or an NFC app. (${webNfcUnavailableReason()})`}>
             <div className="row">
               <input className="input mono" value={f.nfc_uid} onChange={set('nfc_uid')} placeholder="04:A1:7C:22:9B:51:80" maxLength={64} disabled={!isAdmin && !!card?.nfc_uid} />
               {webNfcSupported && <Button type="button" icon={ScanLine} onClick={readUid} loading={reading}>Read tag</Button>}

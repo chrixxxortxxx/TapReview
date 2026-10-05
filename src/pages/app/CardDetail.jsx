@@ -8,7 +8,7 @@ import { cardUrl } from '../../lib/config'
 import { ago, dateTime, EVENT_LABELS, longDate, num, pct } from '../../lib/format'
 import { regionName } from '../../lib/geo'
 import { mapPoints } from '../../lib/derive'
-import { writeTagUrl, webNfcSupported } from '../../lib/nfc'
+import { writeTagUrl, webNfcSupported, webNfcUnavailableReason } from '../../lib/nfc'
 import { Button, CopyField, EmptyState, Modal, Panel, Segmented, Spinner, StatusBadge, useAction, useToast } from '../../components/ui'
 import { CardFormModal, ReplaceCardModal } from '../../components/forms'
 import { ActivityChart, fillDays, isoDaysAgo } from '../../components/Charts'
@@ -161,9 +161,9 @@ export default function CardDetail() {
             </div>
             <div className="row wrap">
               <a className="btn" href={nfcUrl} target="_blank" rel="noopener noreferrer"><ExternalLink size={16} /> Open landing page</a>
-              <Button icon={Nfc} onClick={writeTag} disabled={!webNfcSupported} title={webNfcSupported ? 'Write URL to an NFC tag' : 'Web NFC needs Chrome on Android'}>Write to NFC tag</Button>
+              <Button icon={Nfc} onClick={writeTag} disabled={!webNfcSupported} title={webNfcSupported ? 'Write URL to an NFC tag' : webNfcUnavailableReason()}>Write to NFC tag</Button>
             </div>
-            {!webNfcSupported && <p className="muted" style={{ fontSize: 12.5 }}>To program a tag on this device, use an NFC writer app (e.g. NFC Tools) and write a single <b>URL record</b> with the public card URL. On Android Chrome you can write directly from here.</p>}
+            {!webNfcSupported && <p className="muted" style={{ fontSize: 12.5 }}><b>{webNfcUnavailableReason()}</b> To program a tag on this device, use an NFC writer app (e.g. NFC Tools) and write a single <b>URL record</b> with the public card URL. On Android Chrome you can write directly from here.</p>}
           </div>
         </Panel>
         <Panel title="QR code & card preview" actions={<Segmented value={light ? 'light' : 'dark'} onChange={(v) => setLight(v === 'light')} options={[{ value: 'dark', label: 'Dark' }, { value: 'light', label: 'Light' }]} />}>
